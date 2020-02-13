@@ -1,5 +1,3 @@
-require_relative './rgb_to_hsl.rb'
-
 class RgbaColor
   include RgbToHsl
 
@@ -40,6 +38,10 @@ class RgbaColor
 
   def to_hex
     hex = [r,g,b].map{ |e| e.to_i.to_s(16).rjust(2, '0') }.join
+  end
+
+  def to_color
+    Color::RGBA.new(r,g,b,a)
   end
 
 end
