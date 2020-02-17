@@ -1,4 +1,4 @@
-class RgbaColor
+class ColorSpace::Rgba
   include RgbToHsl
 
   MAX = 255
@@ -12,7 +12,8 @@ class RgbaColor
     @g = Integer(g)
     @b = Integer(b)
     @a = (Float(a) if a) || 1
-    raise 'Malformed RGB color' unless self.valid?
+    # raise 'Malformed RGB color' unless self.valid?
+    raise Relax::Errors::MalformedRgba unless self.valid?
   end
 
   def valid?
@@ -45,11 +46,3 @@ class RgbaColor
   end
 
 end
-
-# rgba = RgbaColor.new('255,210,210')
-# p rgba
-# p rgba.to_a
-# p rgba.to_html
-# p rgba.transparent?
-# p rgba.dark?
-# p rgba.to_hex

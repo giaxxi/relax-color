@@ -1,1 +1,6 @@
 *.DS_Store
+*.gem
+
+_to_do/
+_test_as_installed_gem/
+test/*

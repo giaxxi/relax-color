@@ -1,4 +1,4 @@
-class HslColor
+class ColorSpace::Hsl
 
   MIN = 0
   H_MAX = 360
