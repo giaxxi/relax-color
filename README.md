@@ -1,10 +1,10 @@
-# color-space
+# Relax Color
 Just tool for switching colorspace.
 RGBA to HSL, etc..
+Or is it?
 
 ## How to use
 Don't.
-Too early.
 Still working on it. :)
 
 ## Why did I?
