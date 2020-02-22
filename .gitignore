@@ -2,5 +2,5 @@
 *.gem
 
 _to_do/
-_test_as_installed_gem/
+_test_as_a_gem/
 test/

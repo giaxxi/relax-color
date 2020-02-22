@@ -1,5 +1,11 @@
 module RgbToHsl
 
+  def to_hsl
+    [h,s,l].join(',')
+  end
+
+  private
+
   def l
     (100*(_max + _min)/2).round
   end
@@ -28,8 +34,6 @@ module RgbToHsl
     _h += 360 if _h < 0
     _h
   end
-
-  private
 
   def _r
     r/255.0

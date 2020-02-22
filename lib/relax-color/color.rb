@@ -1,23 +1,28 @@
 class Relax::Color
   COLOR_ENCODINGS = [:hsl, :rgba, :hex]
 
-  attr_reader :color
+  attr_reader :colorspace
 
   def initialize(color, type)
     raise "Not a valid color encoding" unless COLOR_ENCODINGS.include? type
-    @color = ColorSpace::Rgba.new(color) if type == :rgba
-    @color = ColorSpace::Hex.new(color) if type == :hex
-    @color = ColorSpace::Hsl.new(color) if type == :hsl
+    @colorspace = ColorSpace::Rgba.new(color) if type == :rgba
+    @colorspace = ColorSpace::Hex.new(color) if type == :hex
+    @colorspace = ColorSpace::Hsl.new(color) if type == :hsl
+  end
+
+  def to_hsl
+    return self if colorspace.is_a? ColorSpace::Hsl
+    return Relax::Color.new(colorspace.to_hsl, :hsl) if colorspace.class == ColorSpace::Rgba
   end
 
   def to_hex
-    return self if color.class == HexColor
-    return Relax::Color.new(color.to_hex, :hex) if color.class == RgbaColor
+    return self if colorspace.is_a? ColorSpace::Hex
+    return Relax::Color.new(colorspace.to_hex, :hex) if colorspace.class == ColorSpace::Rgba
   end
 
   def to_rgba
-    return self if color.class == RgbaColor
-    return Relax::Color.new(color.to_rgba, :rgba) if color.class == HexColor
+    return self if colorspace.class == ColorSpace::Rgba
+    return Relax::Color.new(colorspace.to_rgba, :rgba) if colorspace.class == ColorSpace::Hex
   end
 
   def self.rgba(r, g, b, a=1)

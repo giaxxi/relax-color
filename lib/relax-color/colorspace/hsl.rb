@@ -7,7 +7,7 @@ class ColorSpace::Hsl
 
   attr_reader :h, :s, :l
 
-  def initialize(hsl)
+  def initialize(hsl) # it expects a string as argument
     h,s,l = hsl.split(',')
     @h = Integer(h)
     @s = Integer(s)
@@ -31,9 +31,8 @@ class ColorSpace::Hsl
     (MIN..L_MAX).include? l
   end
 
-
   def to_color
-    Color::HSL.new(h,s,l)
+    ColorSpace::Hsl.new(h,s,l)
   end
 
 end
