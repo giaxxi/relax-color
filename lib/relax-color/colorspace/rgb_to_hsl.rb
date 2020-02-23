@@ -4,6 +4,10 @@ module RgbToHsl
     [h,s,l].join(',')
   end
 
+  def to_hsl_hash
+    {h: h, s: s, l: l}
+  end
+
   private
 
   def l
@@ -11,6 +15,7 @@ module RgbToHsl
   end
 
   def s
+    tmp_s = 1
     return 0 if _max == _min
     if l  < 50
       tmp_s = (_max - _min)/(_max + _min)

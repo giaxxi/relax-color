@@ -1,6 +1,10 @@
 module Relax::Errors
   class MalformedColor < StandardError; end
 
+  module MalformedHsl
+    class ChannelsOutOfRange < MalformedColor; end
+  end
+
   module MalformedRgba
     class ArgumentMustBeAString < MalformedColor; end
     class ChannelsOutOfRange < MalformedColor; end

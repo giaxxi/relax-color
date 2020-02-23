@@ -1,15 +1,12 @@
 class ColorSpace::Rgba
   include RgbToHsl
-  include ValidateColorspaceString
 
   MAX = 255
   MIN = 0
 
   attr_reader :r, :g, :b, :a
 
-  def initialize(rgba) # it expects a string as argument
-    valid_rgba_format?(rgba)
-    r, g, b, a = rgba.split(',')
+  def initialize(r, g, b, a=1.0)
     @r = Integer(r)
     @g = Integer(g)
     @b = Integer(b)
@@ -18,7 +15,11 @@ class ColorSpace::Rgba
   end
 
   def to_a
-    [r,g,b,a] 
+    [r,g,b,a]
+  end
+
+  def to_rgba_hash
+    {r: r, g: g, b: b, a: a}
   end
 
   def to_html
@@ -35,7 +36,7 @@ class ColorSpace::Rgba
   end
 
   def opaque
-    return ColorSpace::Rgba.new([r,g,b].join(',')) if a < 1
+    return ColorSpace::Rgba.new(r,g,b) if a < 1
     self
   end
 
@@ -44,7 +45,11 @@ class ColorSpace::Rgba
   end
 
   def dark?
-    [r,g,b].any?{ |ch| ch < 128 }
+    l <= 50
+  end
+
+  def light?
+    l > 50
   end
 
   def to_relative
@@ -55,11 +60,15 @@ class ColorSpace::Rgba
     hex = [r,g,b].map{ |e| e.to_i.to_s(16).rjust(2, '0') }.join
   end
 
+  def to_html_hex
+    to_hex.prepend '#'
+  end
+
   def to_relax_color
     Relax::Color.rgba(r,g,b,a)
   end
 
-  private
+  protected
 
     def valid_range?
       [r,g,b].none? { |ch| ch < MIN || ch > MAX} && (0.0..1.0).include?(a)

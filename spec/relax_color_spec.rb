@@ -3,7 +3,7 @@ require_relative '../lib/relax-color.rb'
 
 describe Relax::Color do
   it 'Instantiate a RGBA color by default method new' do
-    my_color = Relax::Color.new('1,1,1,0.8', :rgba)
+    my_color = Relax::Color.new(:rgba, r: 1, g: 1, b: 1, a: 0.8)
     expect(my_color).to be_a Relax::Color
   end
   it 'Instantiate a RGBA color by calling the module RGBA' do
@@ -15,7 +15,7 @@ describe Relax::Color do
     expect(my_color).to be_a Relax::Color
   end
 
-  my_color = Relax::Color.new('1,1,1,0.8', :rgba)
+  my_color = Relax::Color.new(:rgba, r: 1, g: 1, b: 1, a: 0.8)
   
   it 'Relax::Color :rgba instance responds to colorspace and returns an instance of ColorSpace::Rgba' do
     expect(my_color).to respond_to(:colorspace)
