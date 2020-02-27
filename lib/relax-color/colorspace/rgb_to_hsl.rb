@@ -1,75 +1,62 @@
-module RgbToHsl
+# frozen_string_literal: true
 
+# Conversion from RGBA colorspace to HSL
+module RgbToHsl
   def to_hsl
-    [h,s,l].join(',')
+    calculate_channels
+    [@hue, @saturation, @lightness]
   end
 
   def to_hsl_hash
-    {h: h, s: s, l: l}
+    %i[h s l].zip(to_hsl).to_h
+  end
+
+  def lightness
+    to_hsl.last
   end
 
   private
 
-  def l
-    (100*(_max + _min)/2).round
+  def init
+    @r_rel, @g_rel, @b_rel = to_relative
+    @max = to_relative.max
+    @min = to_relative.min
+    @delta = @max - @min
+    @sum = @max + @min
+    @lightness = (calculate_lightness * 100).round
   end
 
-  def s
-    tmp_s = 1
-    return 0 if _max == _min
-    if l  < 50
-      tmp_s = (_max - _min)/(_max + _min)
-    elsif l > 50
-      tmp_s = ( _max - _min)/(2.0 - _max - _min)
+  def calculate_channels
+    init
+    @hue = calculate_hue.round
+    @saturation = (calculate_saturation * 100).round
+  end
+
+  def calculate_hue
+    return 0 if @min == @max
+
+    if @r_rel == @max
+      ((60 * (@g_rel - @b_rel) / @delta) + 360) % 360
+    elsif @g_rel == @max
+      (60 * (@b_rel - @r_rel) / @delta) + 120
+    else
+      (60 * (@r_rel - @g_rel) / @delta) + 240
     end
-    (100*tmp_s).round
   end
 
-  def h
-    return 0 if _max == _min
-    case _rgb_max[:channel]
-    when :r
-      _h = (_g - _b)/(_max - _min)
-    when :g
-      _h = 2.0 + (_b - _r)/(_max - _min)
-    when :b
-      _h = 4.0 + (_r - _g)/(_max - _min)
+  def calculate_lightness
+    0.5 * @sum
+  end
+
+  def calculate_saturation
+    return 0 if @min == @max
+
+    if @lightness == 100
+      1.0
+    elsif @lightness <= 50
+      @delta / @sum
+    else
+      @delta / (2 - @sum)
     end
-    _h = (_h * 60).round
-    _h += 360 if _h < 0
-    _h
   end
-
-  def _r
-    r/255.0
-  end
-
-  def _g
-    g/255.0
-  end
-
-  def _b
-    b/255.0
-  end
-
-  def _rgb
-    {r: _r, g: _g, b: _b}
-  end
-
-  def _rgb_max
-    [:channel, :value].zip(_rgb.max_by{|_,v| v}).to_h
-  end
-
-  def _rgb_min
-    [:channel, :value].zip(_rgb.min_by{|_,v| v}).to_h
-  end
-
-  def _max
-    _rgb_max[:value]
-  end
-
-  def _min
-    _rgb_min[:value]
-  end
-
 end

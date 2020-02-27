@@ -1,95 +1,73 @@
+# frozen_string_literal: true
+
+# Conversion from HSL colorspace to RGBA
 module HslToRgb
+  H_MAX = 360
+  S_MAX = 100
+  L_MAX = 100
   RGB_MAX = 255
-  RGB_MIN = 0
-
-  attr_reader :piero
-
-  def to_rgba
-    [r, g, b, 1.0].join(',')
-  end
+  ONE_HALF = 1.0 / 2.0
+  ONE_THIRD = 1.0 / 3.0
+  ONE_SIXTH = 1.0 / 6.0
+  TWO_THIRD = 2.0 / 3.0
 
   def to_rgba_hash
-    {r: r, g: g, b: b, a: 1.0}
+    init
+    rgba_hash = %i[r g b a].zip([red, green, blue, 1.0]).to_h
+    %i[@h_rel @s_rel @l_rel @ttq @ttp @achromatic]
+      .each { |var| remove_instance_variable var }
+    rgba_hash
   end
 
-  protected
-
-  def _h
-    h.fdiv 360
+  def to_rgba
+    to_rgba_hash.values
   end
 
-  def _s
-    s.fdiv 100
+  private
+
+  def init
+    @h_rel = hue.fdiv H_MAX
+    @s_rel = saturation.fdiv S_MAX
+    @l_rel = lightness.fdiv L_MAX
+    @ttq = init_ttq
+    @ttp = 2 * @l_rel - @ttq
+    @achromatic = (@l_rel * RGB_MAX).round
   end
 
-  def _l
-    l.fdiv 100
+  def init_ttq
+    return @l_rel * (1 + @s_rel) if @l_rel < 0.5
+
+    @l_rel + @s_rel - @l_rel * @s_rel
   end
 
-  def gray_level
-    (RGB_MAX * _l).round
+  def hsv_channel_to_rgb(ttp, ttq, ttu)
+    ttu += 1 if ttu.negative?
+    ttu -= 1 if ttu > 1
+    return ttp + (ttq - ttp) * 6 * ttu if ttu < ONE_SIXTH
+    return ttq if ttu < ONE_HALF
+    return ttp + (ttq - ttp) * (TWO_THIRD - ttu) * 6 if ttu < TWO_THIRD
+
+    ttp
   end
 
-  def tmp_1
-    if _l < 0.5
-      _l * (1.0 + _s)
-    else
-      _l + _s - _l * _s
-    end
+  def red
+    return @achromatic if saturation.zero?
+
+    r = hsv_channel_to_rgb(@ttp, @ttq, @h_rel + ONE_THIRD)
+    (r * RGB_MAX).round
   end
 
-  def tmp_2
-    2 * _l - tmp_1
+  def green
+    return @achromatic if saturation.zero?
+
+    g = hsv_channel_to_rgb(@ttp, @ttq, @h_rel)
+    (g * RGB_MAX).round
   end
 
-  def tmp_r
-    _h + 0.333
-  end
+  def blue
+    return @achromatic if saturation.zero?
 
-  def tmp_g
-    _h
+    b = hsv_channel_to_rgb(@ttp, @ttq, @h_rel - ONE_THIRD)
+    (b * RGB_MAX).round
   end
-
-  def tmp_b
-    tmp = _h - 0.333
-    tmp += 1.0 if tmp < 0
-    tmp
-  end
-
-  def r
-    return gray_level if s == 0
-    (channel(tmp_r) * 255).round
-  end
-
-  def g
-    return gray_level if s == 0
-    (channel(tmp_g) * 255).round
-  end
-
-  def b
-    return gray_level if s == 0
-    (channel(tmp_b) * 255).round
-  end
-
-  def channel(tmp_ch)
-    return gray_level if s == 0
-    if tmp_ch * 6 < 1
-      tmp_2 + (tmp_1 - tmp_2) * 6 * tmp_ch
-    elsif tmp_ch * 2 < 1
-      tmp_1
-    elsif tmp_ch * 3 < 2
-      tmp_2 + (tmp_1 - tmp_2) * (0.666 - tmp_ch) * 6
-    else
-      tmp_2
-    end
-  end
-
 end
-
-# class Hsl
-#   include HslToRgb
-#   attr_reader :h, :s, :l
-#   def initialize(h, s, l)
-#     @h, @s, @l = h, s, l
-#   end
-# end

@@ -1,3 +1,6 @@
+# frozen_string_literal: true
+
+# Wrapper for colorspace classes
 module ColorSpace
   require_relative './colorspace/rgb_to_hsl.rb'
   require_relative './colorspace/hsl_to_rgb.rb'

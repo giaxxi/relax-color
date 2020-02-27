@@ -1,59 +1,88 @@
-class Relax::Color
-  COLOR_ENCODINGS = [:hsl, :rgba, :hex]
+# frozen_string_literal: true
 
-  attr_reader :colorspace
+module Relax
+  # Core functionality of relax-color
+  class Color
+    COLOR_ENCODINGS = %i[hsl rgba hex].freeze
 
-  def initialize(type, args)
-    raise "Not a valid color encoding" unless COLOR_ENCODINGS.include? type
-    @colorspace = ColorSpace::Rgba.new(args[:r], args[:g], args[:b], args[:a]) if type == :rgba
-    @colorspace = ColorSpace::Hex.new(args) if type == :hex
-    @colorspace = ColorSpace::Hsl.new(args[:h], args[:s], args[:l]) if type == :hsl
-  end
+    attr_reader :colorspace
 
-  def self.rgba(r, g, b, a=1)
-    Relax::Color.new(:rgba, r: r, g: g, b: b, a: a)
-  end
+    def initialize(type, args)
+      case type
+      when :rgba
+        init_rgba(args[:r], args[:g], args[:b], args[:a])
+      when :hsl
+        init_hsl(args[:h], args[:s], args[:l])
+      when :hex
+        @colorspace = ColorSpace::Hex.new(args)
+      else
+        raise 'Not a valid color encoding'
+      end
+    end
 
-  def self.hex(hex_string)
-    Relax::Color.new(:hex, hex_string)
-  end
+    def init_rgba(red, green, blue, alpha)
+      @colorspace = ColorSpace::Rgba.new(red, green, blue, alpha)
+    end
 
-  def self.hsl(h, s, l)
-    Relax::Color.new(:hsl, h: h, s: s, l: l)
-  end
+    def init_hsl(hue, saturation, lightness)
+      @colorspace = ColorSpace::Hsl.new(hue, saturation, lightness)
+    end
 
+    def self.rgba(red, green, blue, alpha = 1)
+      Relax::Color.new(:rgba, r: red, g: green, b: blue, a: alpha)
+    end
 
-  def to_hsl
-    return self if colorspace.is_a? ColorSpace::Hsl
-    return Relax::Color.new(:hsl, colorspace.to_hsl_hash) #if colorspace.class == ColorSpace::Rgba
-  end
+    def self.hex(hex_string)
+      Relax::Color.new(:hex, hex_string)
+    end
 
-  def to_hex
-    return self if colorspace.is_a? ColorSpace::Hex
-    return Relax::Color.new(:hex, colorspace.to_hex) #if colorspace.class == ColorSpace::Rgba
-  end
+    def self.hsl(hue, saturation, lightness)
+      Relax::Color.new(:hsl, h: hue, s: saturation, l: lightness)
+    end
 
-  def to_rgba
-    return self if colorspace.is_a? ColorSpace::Rgba
-    return Relax::Color.new(:rgba, colorspace.to_rgba_hash) #if colorspace.class == ColorSpace::Hex
-  end
+    def to_hsl
+      if colorspace.is_a? ColorSpace::Hsl
+        self
+      elsif colorspace.is_a? ColorSpace::Rgba
+        Relax::Color.new(:hsl, colorspace.to_hsl_hash)
+      else
+        raise Relax::Errors::Color::NotImplemented
+      end
+    end
 
- module RGBA
-    def self.new(r, g, b, a=1)
-      Relax::Color.rgba(r, g, b, a)
+    def to_hex
+      return self if colorspace.is_a? ColorSpace::Hex
+
+      # if colorspace.class == ColorSpace::Rgba
+      Relax::Color.new(:hex, colorspace.to_hex)
+    end
+
+    def to_rgba
+      return self if colorspace.is_a? ColorSpace::Rgba
+
+      # if colorspace.class == ColorSpace::Hex
+      Relax::Color.new(:rgba, colorspace.to_rgba_hash)
+    end
+
+    # sintactic sugar Relax::Color::RGB.new(red, gree, blue, alpha)
+    module RGBA
+      def self.new(red, green, blue, alpha = 1)
+        Relax::Color.rgba(red, green, blue, alpha)
+      end
+    end
+
+    # sintactic sugar Relax::Color::HSL.new(hue, saturation, lightness)
+    module HSL
+      def self.new(hue, saturation, lightness)
+        Relax::Color.hsl(hue, saturation, lightness)
+      end
+    end
+
+    # sintactic sugar Relax::Color::HEX.new(hex_string)
+    module HEX
+      def self.new(hex_string)
+        Relax::Color.hex(hex_string)
+      end
     end
   end
-
-  module HSL
-    def self.new(h, s, l)
-      Relax::Color.hsl(h,s,l)
-    end
-  end
-
-  module HEX
-    def self.new(hex_string)
-      Relax::Color.hex(hex_string)
-    end
-  end
-
 end
