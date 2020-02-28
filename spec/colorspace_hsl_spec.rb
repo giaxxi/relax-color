@@ -36,10 +36,10 @@ describe ColorSpace::Hsl do
 
   context HslToRgb do
     it 'Converts properly, hsl to rgba (1)' do
-      expect(ColorSpace::Hsl.new(341, 100, 50).to_rgba).to eql [255, 0, 81, 1.0]
+      expect(ColorSpace::Hsl.new(341, 100, 50).to_rgba).to eql [255, 0, 81]
     end
     it 'Converts properly, hsl to rgba (2)' do
-      expect(ColorSpace::Hsl.new(100, 100, 50).to_rgba).to eql [85, 255, 0, 1.0]
+      expect(ColorSpace::Hsl.new(100, 100, 50).to_rgba).to eql [85, 255, 0]
     end
   end
 end

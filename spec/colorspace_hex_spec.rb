@@ -17,11 +17,6 @@ describe ColorSpace::Hex do
       expect { ColorSpace::Hex.new('12345') }
         .to raise_error Relax::Errors::Hex::StringMustBeSixChars
     end
-    it  'Raises InvalidChars when instantiating an object' \
-        'with a wrong argument' do
-      expect { Relax::Color::HEX.new('###0050') }
-        .to raise_error Relax::Errors::Hex::InvalidChars
-    end
   end
 end
 

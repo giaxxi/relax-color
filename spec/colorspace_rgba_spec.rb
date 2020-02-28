@@ -65,25 +65,21 @@ end
 describe ColorSpace::Rgba do
   let(:my_color) { ColorSpace::Rgba.new(1, 1, 1, 0.8) }
   context 'Conversion to HSL' do
-    it 'Returns a hsl colorspace coded Array' do
-      expect(my_color.to_hsl).to be_a Array
-    end
     it 'It returns an Array with correct conversion' do
       rgb_color = ColorSpace::Rgba.new(250, 28, 129)
       expect(rgb_color.to_hsl).to eq [333, 96, 55]
     end
-    it 'Returns a hsl colorspace coded hash' do
-      expect(my_color.to_hsl_hash).to be_a Hash
-    end
     it 'It returns an Hash with correct conversion' do
       rgb_color = ColorSpace::Rgba.new(250, 28, 129)
-      expect(rgb_color.to_hsl_hash).to eq({ h: 333, s: 96, l: 55 })
+      expect(rgb_color.to_hsl_hash)
+        .to eq({ hue: 333, saturation: 96, lightness: 55 })
     end
     it  'Returns a Hash which can be used' \
         'to instantiate a ColorSpace::Hsl object' do
       hsl_hash = my_color.to_hsl_hash
-      hsl_colorspace = ColorSpace::Hsl
-                       .new(hsl_hash[:h], hsl_hash[:s], hsl_hash[:l])
+      hsl_colorspace = ColorSpace::Hsl.new(hsl_hash[:hue],
+                                           hsl_hash[:saturation],
+                                           hsl_hash[:lightness])
       expect(hsl_colorspace).to be_a ColorSpace::Hsl
     end
   end

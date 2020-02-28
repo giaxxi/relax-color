@@ -5,6 +5,7 @@ module ColorSpace
   class Rgba
     include RgbToHsl
 
+    ChannelsOutOfRange = Relax::Errors::Rgba::ChannelsOutOfRange
     MAX = 255
     MIN = 0
 
@@ -14,8 +15,15 @@ module ColorSpace
       @r = Integer(red)
       @g = Integer(green)
       @b = Integer(blue)
-      @a = (Float(alpha) if alpha) || 1.0
-      raise Relax::Errors::Rgba::ChannelsOutOfRange unless valid_range?
+      @a = (Float(alpha) if alpha).round(2) || 1.0
+      validate_channels
+    end
+
+    def change_to(args)
+      change_red_to args[:red] if args[:red]
+      change_green_to args[:green] if args[:green]
+      change_blue_to args[:blue] if args[:blue]
+      change_alpha_to args[:alpha] if args[:alpha]
     end
 
     def to_s
@@ -77,10 +85,54 @@ module ColorSpace
       Relax::Color.rgba(r, g, b, a)
     end
 
-    protected
+    private
+
+    def change_red_to(red)
+      red = Integer(red)
+      raise ChannelsOutOfRange if rgb_out_of_range? red
+
+      @r = red
+      true
+    end
+
+    def change_green_to(green)
+      green = Integer(green)
+      raise ChannelsOutOfRange if rgb_out_of_range? green
+
+      @g = green
+      true
+    end
+
+    def change_blue_to(blue)
+      blue = Integer(blue)
+      raise ChannelsOutOfRange if rgb_out_of_range? blue
+
+      @b = blue
+      true
+    end
+
+    def change_alpha_to(alpha)
+      alpha = Float(alpha).round(2)
+      raise ChannelsOutOfRange unless alpha_in_range? alpha
+
+      @a = alpha
+      true
+    end
+
+    def rgb_out_of_range?(channel)
+      channel < MIN || channel > MAX
+    end
+
+    def alpha_in_range?(alpha)
+      (0.0..1.0).include?(alpha)
+    end
 
     def valid_range?
-      [r, g, b].none? { |ch| ch < MIN || ch > MAX } && (0.0..1.0).include?(a)
+      [r, g, b].none? { |ch| rgb_out_of_range?(ch) } && alpha_in_range?(a)
+    end
+
+    def validate_channels
+      raise ChannelsOutOfRange unless valid_range?
     end
   end
 end

@@ -4,11 +4,14 @@
 module RgbToHsl
   def to_hsl
     calculate_channels
-    [@hue, @saturation, @lightness]
+    res = [@hue, @saturation, @lightness]
+    %i[@r_rel @g_rel @b_rel @max @min @delta @sum @lightness @hue @saturation]
+      .each { |var| remove_instance_variable var }
+    res
   end
 
   def to_hsl_hash
-    %i[h s l].zip(to_hsl).to_h
+    %i[hue saturation lightness].zip(to_hsl).to_h
   end
 
   def lightness

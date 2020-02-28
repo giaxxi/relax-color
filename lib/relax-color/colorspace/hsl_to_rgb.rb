@@ -11,24 +11,24 @@ module HslToRgb
   ONE_SIXTH = 1.0 / 6.0
   TWO_THIRD = 2.0 / 3.0
 
-  def to_rgba_hash
+  def to_rgba
     init
-    rgba_hash = %i[r g b a].zip([red, green, blue, 1.0]).to_h
+    res = [red, green, blue]
     %i[@h_rel @s_rel @l_rel @ttq @ttp @achromatic]
       .each { |var| remove_instance_variable var }
-    rgba_hash
+    res
   end
 
-  def to_rgba
-    to_rgba_hash.values
+  def to_rgba_hash
+    %i[red green blue].zip(to_rgba).to_h
   end
 
   private
 
   def init
-    @h_rel = hue.fdiv H_MAX
-    @s_rel = saturation.fdiv S_MAX
-    @l_rel = lightness.fdiv L_MAX
+    @h_rel = h.fdiv H_MAX
+    @s_rel = s.fdiv S_MAX
+    @l_rel = l.fdiv L_MAX
     @ttq = init_ttq
     @ttp = 2 * @l_rel - @ttq
     @achromatic = (@l_rel * RGB_MAX).round
@@ -51,21 +51,21 @@ module HslToRgb
   end
 
   def red
-    return @achromatic if saturation.zero?
+    return @achromatic if s.zero?
 
     r = hsv_channel_to_rgb(@ttp, @ttq, @h_rel + ONE_THIRD)
     (r * RGB_MAX).round
   end
 
   def green
-    return @achromatic if saturation.zero?
+    return @achromatic if s.zero?
 
     g = hsv_channel_to_rgb(@ttp, @ttq, @h_rel)
     (g * RGB_MAX).round
   end
 
   def blue
-    return @achromatic if saturation.zero?
+    return @achromatic if s.zero?
 
     b = hsv_channel_to_rgb(@ttp, @ttq, @h_rel - ONE_THIRD)
     (b * RGB_MAX).round

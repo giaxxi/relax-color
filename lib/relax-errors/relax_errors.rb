@@ -4,6 +4,7 @@ module Relax
   module Errors
     module Color
       class NotImplemented < StandardError; end
+      class InvalidColorspace < StandardError; end
     end
 
     module Hsl
