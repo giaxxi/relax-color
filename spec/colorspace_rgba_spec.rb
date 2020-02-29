@@ -66,21 +66,22 @@ describe Relax::ColorSpace::Rgba do
   let(:my_color) { Relax::ColorSpace::Rgba.new(1, 1, 1, 0.8) }
   context 'Conversion to HSL' do
     it 'It returns an Array with correct conversion' do
-      rgb_color = Relax::ColorSpace::Rgba.new(250, 28, 129)
-      expect(rgb_color.to_hsl).to eq [333, 96, 55]
+      rgb_color = Relax::ColorSpace::Rgba.new(250, 28, 129, 0.3)
+      expect(rgb_color.to_hsla).to eq [333, 96, 55, 0.3]
     end
     it 'It returns an Hash with correct conversion' do
-      rgb_color = Relax::ColorSpace::Rgba.new(250, 28, 129)
-      expect(rgb_color.to_hsl_hash)
-        .to eq({ hue: 333, saturation: 96, lightness: 55 })
+      rgb_color = Relax::ColorSpace::Rgba.new(250, 28, 129, 0.55)
+      expect(rgb_color.to_hsla_hash)
+        .to eq({ hue: 333, saturation: 96, lightness: 55, alpha: 0.55 })
     end
     it  'Returns a Hash which can be used' \
         'to instantiate a ColorSpace::Hsl object' do
-      hsl_hash = my_color.to_hsl_hash
-      hsl_colorspace = Relax::ColorSpace::Hsl.new(hsl_hash[:hue],
-                                                  hsl_hash[:saturation],
-                                                  hsl_hash[:lightness])
-      expect(hsl_colorspace).to be_a Relax::ColorSpace::Hsl
+      hsla_hash = my_color.to_hsla_hash
+      hsl_colorspace = Relax::ColorSpace::Hsla.new(hsla_hash[:hue],
+                                                   hsla_hash[:saturation],
+                                                   hsla_hash[:lightness],
+                                                   hsla_hash[:alpha])
+      expect(hsl_colorspace).to be_a Relax::ColorSpace::Hsla
     end
   end
 end

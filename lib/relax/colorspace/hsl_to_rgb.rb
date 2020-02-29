@@ -14,14 +14,14 @@ module Relax
 
     def to_rgba
       init
-      res = [red, green, blue]
+      res = [red, green, blue, a]
       %i[@h_rel @s_rel @l_rel @ttq @ttp @achromatic]
         .each { |var| remove_instance_variable var }
       res
     end
 
     def to_rgba_hash
-      %i[red green blue].zip(to_rgba).to_h
+      %i[red green blue alpha].zip(to_rgba).to_h
     end
 
     private

@@ -24,7 +24,7 @@ describe Relax::Color do
 
   it 'Has one instance of Relax::Rgba and one of Relax::Hsl' do
     expect(my_color.rgba).to be_a Relax::Rgba
-    expect(my_color.hsl).to be_a Relax::Hsl
+    expect(my_color.hsla).to be_a Relax::Hsla
   end
 end
 
@@ -34,12 +34,12 @@ describe 'Changing color' do
   it 'Updates rgba channels value' do
     my_color.rgba_to red: 100, green: 120, blue: 220, alpha: 0.2
     expect(my_color.rgba.to_a).to eq [100, 120, 220, 0.2]
-    expect(my_color.hsl.to_a).to eq [230, 63, 63]
+    expect(my_color.hsla.to_a).to eq [230, 63, 63, 0.2]
   end
 
   it 'Updates hsl channels value' do
-    my_color.hsl_to hue: 100, saturation: 80, lightness: 40
-    expect(my_color.hsl.to_a).to eq [100, 80, 40]
-    expect(my_color.rgba.to_a).to eq [75, 184, 20, 0.8]
+    my_color.hsla_to hue: 100, saturation: 80, lightness: 40, alpha: 0.1
+    expect(my_color.hsla.to_a).to eq [100, 80, 40, 0.1]
+    expect(my_color.rgba.to_a).to eq [75, 184, 20, 0.1]
   end
 end

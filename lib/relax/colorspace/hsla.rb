@@ -3,10 +3,10 @@
 module Relax
   module ColorSpace
     # Hue, saturation, lightness colorspace class
-    class Hsl
+    class Hsla
       include HslToRgb
 
-      ChannelsOutOfRange = Relax::Errors::Hsl::ChannelsOutOfRange
+      ChannelsOutOfRange = Relax::Errors::Hsla::ChannelsOutOfRange
       MIN = 0
       H_MAX = 360.0
       S_MAX = 100.0
@@ -14,10 +14,11 @@ module Relax
 
       attr_reader :h, :s, :l, :a
 
-      def initialize(hue, saturation, lightness)
+      def initialize(hue, saturation, lightness, alpha = 1.0)
         @h = Integer(hue)
         @s = Integer(saturation)
         @l = Integer(lightness)
+        @a = (Float(alpha) if alpha).round(2) || 1.0
         raise ChannelsOutOfRange unless channels_in_range?
       end
 
@@ -25,7 +26,7 @@ module Relax
         change_hue_to args[:hue] if args[:hue]
         change_saturation_to args[:saturation] if args[:saturation]
         change_lightness_to args[:lightness] if args[:lightness]
-        # change_alpha_to args[:alpha] if args[:alpha]
+        change_alpha_to args[:alpha] if args[:alpha]
       end
 
       def to_s
@@ -33,15 +34,15 @@ module Relax
       end
 
       def to_a
-        [h, s, l]
+        [h, s, l, a]
       end
 
       def to_h
-        { h: h, s: s, l: l }
+        { h: h, s: s, l: l, a: a }
       end
 
       def to_hex
-        raise Relax::Errors::Hsl::NotImplemented
+        raise Relax::Errors::Hsla::NotImplemented
       end
 
       def to_relative
@@ -50,7 +51,7 @@ module Relax
       end
 
       def to_relax_color
-        Relax::Color.hsl(h, s, l)
+        Relax::Color.hsla(h, s, l, a)
       end
 
       protected
@@ -79,16 +80,21 @@ module Relax
         true
       end
 
-      # def change_alpha_to(alpha)
-      #   alpha = Float(alpha).round(2)
-      #   raise ChannelsOutOfRange unless alpha_in_range? alpha
+      def change_alpha_to(alpha)
+        alpha = Float(alpha).round(2)
+        raise ChannelsOutOfRange unless alpha_in_range? alpha
 
-      #   @a = alpha
-      #   true
-      # end
+        @a = alpha
+        true
+      end
 
       def channels_in_range?
-        hue_in_range?(h) && saturation_in_range?(s) && lightness_in_range?(l)
+        [
+          hue_in_range?(h),
+          saturation_in_range?(s),
+          lightness_in_range?(l),
+          alpha_in_range?(a)
+        ].all?
       end
 
       def hue_in_range?(hue)
@@ -101,6 +107,10 @@ module Relax
 
       def lightness_in_range?(lightness)
         (MIN..L_MAX).include? lightness
+      end
+
+      def alpha_in_range?(alpha)
+        (0.0..1.0).include?(alpha)
       end
     end
   end

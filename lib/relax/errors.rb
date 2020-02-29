@@ -7,7 +7,7 @@ module Relax
       class InvalidColorspace < StandardError; end
     end
 
-    module Hsl
+    module Hsla
       class NotImplemented < StandardError; end
       class ChannelsOutOfRange < StandardError; end
     end

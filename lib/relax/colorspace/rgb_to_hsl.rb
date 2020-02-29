@@ -3,20 +3,20 @@
 module Relax
   # Conversion from RGBA colorspace to HSL
   module RgbToHsl
-    def to_hsl
+    def to_hsla
       calculate_channels
-      res = [@hue, @saturation, @lightness]
+      res = [@hue, @saturation, @lightness, a]
       %i[@r_rel @g_rel @b_rel @max @min @delta @sum @lightness @hue @saturation]
         .each { |var| remove_instance_variable var }
       res
     end
 
-    def to_hsl_hash
-      %i[hue saturation lightness].zip(to_hsl).to_h
+    def to_hsla_hash
+      %i[hue saturation lightness alpha].zip(to_hsla).to_h
     end
 
     def lightness
-      to_hsl.last
+      to_hsla_hash[:lightness]
     end
 
     private
