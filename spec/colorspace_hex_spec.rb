@@ -1,27 +1,27 @@
 # frozen_string_literal: true
 
-require_relative '../lib/relax_color.rb'
+require_relative '../lib/relax.rb'
 
-describe ColorSpace::Hex do
-  let(:my_color) { ColorSpace::Hex.new('ff0050') }
+describe Relax::ColorSpace::Hex do
+  let(:my_color) { Relax::ColorSpace::Hex.new('ff0050') }
 
   it 'Instantiate a ColorSpace::Hex object by default method' do
-    expect(my_color).to be_a ColorSpace::Hex
+    expect(my_color).to be_a Relax::ColorSpace::Hex
   end
 
   context 'Instance initialization errors' do
     it  'Raises StringMustBeSixChars when' \
         'instantiating an object with a wrong argument' do
-      expect { ColorSpace::Hex.new('1234567') }
+      expect { Relax::ColorSpace::Hex.new('1234567') }
         .to raise_error Relax::Errors::Hex::StringMustBeSixChars
-      expect { ColorSpace::Hex.new('12345') }
+      expect { Relax::ColorSpace::Hex.new('12345') }
         .to raise_error Relax::Errors::Hex::StringMustBeSixChars
     end
   end
 end
 
-describe ColorSpace::Hex do
-  let(:my_color) { ColorSpace::Hex.new('ff0050') }
+describe Relax::ColorSpace::Hex do
+  let(:my_color) { Relax::ColorSpace::Hex.new('ff0050') }
 
   context 'Conversion to RGBA' do
     it 'Returns a rgba colorspace coded array' do
@@ -37,8 +37,8 @@ describe ColorSpace::Hex do
       rgba_hash = my_color.to_rgba_hash
       expect(rgba_hash).to be_a Hash
       expect(rgba_hash.values).to eq [255, 0, 80, 1.0]
-      rgba = ColorSpace::Rgba.new(*rgba_hash.values)
-      expect(rgba).to be_a ColorSpace::Rgba
+      rgba = Relax::ColorSpace::Rgba.new(*rgba_hash.values)
+      expect(rgba).to be_a Relax::ColorSpace::Rgba
     end
   end
 
@@ -50,8 +50,8 @@ describe ColorSpace::Hex do
   end
 end
 
-describe ColorSpace::Hex do
-  let(:my_color) { ColorSpace::Hex.new('ff0050') }
+describe Relax::ColorSpace::Hex do
+  let(:my_color) { Relax::ColorSpace::Hex.new('ff0050') }
 
   context 'Other methods' do
     it 'Responds to .to_a' do

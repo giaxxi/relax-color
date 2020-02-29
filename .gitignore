@@ -1,5 +1,8 @@
+memo.md
+
 *.DS_Store
 *.gem
+*.rubocop.yml
 
 _to_do/
 _test_as_a_gem/

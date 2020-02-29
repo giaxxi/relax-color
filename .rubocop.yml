@@ -1,8 +1,10 @@
 AllCops:
   TargetRubyVersion: 2.5.0
   Exclude:
-    - 'test/*'
+    - 'lib/relax-color.rb'
     - 'spec/spec_helper.rb'
+    - 'test/*'
+    - '_test_as_a_gem/*'
 
 Style/HashEachMethods:
   Enabled: true

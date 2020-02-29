@@ -5,7 +5,7 @@ module Relax
   # private change_to
   # for avoiding internal inconsistency between
   # Relax::Rgba and Relax::Hsl
-  class Rgba < ColorSpace::Rgba
+  class Rgba < Relax::ColorSpace::Rgba
     private
 
     def change_to(args)
@@ -17,7 +17,7 @@ module Relax
   # private change_to
   # for avoiding internal inconsistency between
   # Relax::Rgba and Relax::Hsl
-  class Hsl < ColorSpace::Hsl
+  class Hsl < Relax::ColorSpace::Hsl
     private
 
     def change_to(args)

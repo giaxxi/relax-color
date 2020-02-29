@@ -1,59 +1,59 @@
 # frozen_string_literal: true
 
-require_relative '../lib/relax_color.rb'
+require_relative '../lib/relax.rb'
 
-describe ColorSpace::Rgba do
-  let(:my_color) { ColorSpace::Rgba.new(1, 1, 1, 0.8) }
+describe Relax::ColorSpace::Rgba do
+  let(:my_color) { Relax::ColorSpace::Rgba.new(1, 1, 1, 0.8) }
 
   context 'Correct instantiating' do
-    it 'Instantiate a ColorSpace::Rgba object by default method' do
-      expect(my_color).to be_a ColorSpace::Rgba
+    it 'Instantiate a Relax::ColorSpace::Rgba object by default method' do
+      expect(my_color).to be_a Relax::ColorSpace::Rgba
     end
 
-    it  'Instantiate a ColorSpace::Rgba object with alpha=1.0' \
+    it  'Instantiate a Relax::ColorSpace::Rgba object with alpha=1.0' \
         'if alpha channel is not specified' do
-      my_color_no_alpha = ColorSpace::Rgba.new(1, 1, 1)
-      expect(my_color_no_alpha).to be_a ColorSpace::Rgba
+      my_color_no_alpha = Relax::ColorSpace::Rgba.new(1, 1, 1)
+      expect(my_color_no_alpha).to be_a Relax::ColorSpace::Rgba
       expect(my_color_no_alpha.a).to equal 1.0
     end
   end
 end
 
-describe ColorSpace::Rgba do
-  # let(:my_color) {ColorSpace::Rgba.new(1, 1, 1, 0.8)}
+describe Relax::ColorSpace::Rgba do
+  # let(:my_color) {Relax::ColorSpace::Rgba.new(1, 1, 1, 0.8)}
   context 'Instance initialization errors' do
     it  'Raises ArgumentError when instantiating' \
         'an object with a wrong argument' do
-      expect { ColorSpace::Rgba.new(10) }.to raise_error ArgumentError
+      expect { Relax::ColorSpace::Rgba.new(10) }.to raise_error ArgumentError
     end
     it  'Raises ArgumentError when instantiating' \
         'an object with a wrong argument' do
-      expect { ColorSpace::Rgba.new('a', 10, 10, 1) }
+      expect { Relax::ColorSpace::Rgba.new('a', 10, 10, 1) }
         .to raise_error ArgumentError
     end
     it  'Raises ChannelsOutOfRange when instantiating' \
         'an object with a wrong argument' do
-      expect { ColorSpace::Rgba.new(256, 0, 0, 0) }
+      expect { Relax::ColorSpace::Rgba.new(256, 0, 0, 0) }
         .to raise_error Relax::Errors::Rgba::ChannelsOutOfRange
-      expect { ColorSpace::Rgba.new(-1, 0, 0, 0) }
+      expect { Relax::ColorSpace::Rgba.new(-1, 0, 0, 0) }
         .to raise_error Relax::Errors::Rgba::ChannelsOutOfRange
-      expect { ColorSpace::Rgba.new(1, 0, 0, 1.1) }
+      expect { Relax::ColorSpace::Rgba.new(1, 0, 0, 1.1) }
         .to raise_error Relax::Errors::Rgba::ChannelsOutOfRange
     end
   end
 end
 
-describe ColorSpace::Rgba do
-  let(:my_color) { ColorSpace::Rgba.new(1, 1, 1, 0.8) }
+describe Relax::ColorSpace::Rgba do
+  let(:my_color) { Relax::ColorSpace::Rgba.new(1, 1, 1, 0.8) }
 
   context 'Conversion to HEX' do
     it 'Returns a hex colorspace coded string' do
       expect(my_color.to_hex).to be_a String
     end
-    it  'Returns a String which can be used to' \
+    it  'Returns a String which can be used to ' \
         'instantiate a ColorSpace::Hex object' do
-      colorspace_hex = ColorSpace::Hex.new(my_color.to_hex)
-      expect(colorspace_hex).to be_a ColorSpace::Hex
+      colorspace_hex = Relax::ColorSpace::Hex.new(my_color.to_hex)
+      expect(colorspace_hex).to be_a Relax::ColorSpace::Hex
     end
     it 'Returns the hex colorspace string when called .to_hex' do
       expect(my_color.to_hex).to be_a String
@@ -62,31 +62,31 @@ describe ColorSpace::Rgba do
   end
 end
 
-describe ColorSpace::Rgba do
-  let(:my_color) { ColorSpace::Rgba.new(1, 1, 1, 0.8) }
+describe Relax::ColorSpace::Rgba do
+  let(:my_color) { Relax::ColorSpace::Rgba.new(1, 1, 1, 0.8) }
   context 'Conversion to HSL' do
     it 'It returns an Array with correct conversion' do
-      rgb_color = ColorSpace::Rgba.new(250, 28, 129)
+      rgb_color = Relax::ColorSpace::Rgba.new(250, 28, 129)
       expect(rgb_color.to_hsl).to eq [333, 96, 55]
     end
     it 'It returns an Hash with correct conversion' do
-      rgb_color = ColorSpace::Rgba.new(250, 28, 129)
+      rgb_color = Relax::ColorSpace::Rgba.new(250, 28, 129)
       expect(rgb_color.to_hsl_hash)
         .to eq({ hue: 333, saturation: 96, lightness: 55 })
     end
     it  'Returns a Hash which can be used' \
         'to instantiate a ColorSpace::Hsl object' do
       hsl_hash = my_color.to_hsl_hash
-      hsl_colorspace = ColorSpace::Hsl.new(hsl_hash[:hue],
-                                           hsl_hash[:saturation],
-                                           hsl_hash[:lightness])
-      expect(hsl_colorspace).to be_a ColorSpace::Hsl
+      hsl_colorspace = Relax::ColorSpace::Hsl.new(hsl_hash[:hue],
+                                                  hsl_hash[:saturation],
+                                                  hsl_hash[:lightness])
+      expect(hsl_colorspace).to be_a Relax::ColorSpace::Hsl
     end
   end
 end
 
-describe ColorSpace::Rgba do
-  let(:my_color) { ColorSpace::Rgba.new(1, 1, 1, 0.8) }
+describe Relax::ColorSpace::Rgba do
+  let(:my_color) { Relax::ColorSpace::Rgba.new(1, 1, 1, 0.8) }
 
   context 'Other methods' do
     it  'Can be converted to Relax::Color' \
@@ -109,8 +109,8 @@ describe ColorSpace::Rgba do
   end
 end
 
-describe ColorSpace::Rgba do
-  let(:my_color) { ColorSpace::Rgba.new(1, 1, 1, 0.8) }
+describe Relax::ColorSpace::Rgba do
+  let(:my_color) { Relax::ColorSpace::Rgba.new(1, 1, 1, 0.8) }
 
   context 'Transparency, opacity, light?, dark?' do
     it 'Respond to .transparent? returning true or false' do
@@ -119,45 +119,45 @@ describe ColorSpace::Rgba do
     end
 
     it 'Returns true or false when a color is dark' do
-      dark_color = ColorSpace::Rgba.new(115, 151, 101)
+      dark_color = Relax::ColorSpace::Rgba.new(115, 151, 101)
       expect(dark_color.dark?).to be true
       expect(dark_color.light?).to be false
     end
 
     it 'Returns true or false when a color is light' do
-      light_color = ColorSpace::Rgba.new(122, 155, 105)
+      light_color = Relax::ColorSpace::Rgba.new(122, 155, 105)
       expect(light_color.dark?).to be false
       expect(light_color.light?).to be true
     end
   end
 end
 
-describe ColorSpace::Rgba do
-  let(:my_color) { ColorSpace::Rgba.new(1, 1, 1, 0.8) }
+describe Relax::ColorSpace::Rgba do
+  let(:my_color) { Relax::ColorSpace::Rgba.new(1, 1, 1, 0.8) }
 
   context 'Opacity' do
     it 'Sets alpha to 1.0 calling .opaque!, returning true if done' do
-      my_transparent_color = ColorSpace::Rgba.new(1, 1, 1, 0.8)
+      my_transparent_color = Relax::ColorSpace::Rgba.new(1, 1, 1, 0.8)
       expect(my_transparent_color.opaque!).to be true
       expect(my_transparent_color.a).to eq 1.0
     end
 
     it 'Sets alpha to 1 calling .opaque!, returns false when already opaque' do
-      my_opaque_color = ColorSpace::Rgba.new(1, 1, 1)
+      my_opaque_color = Relax::ColorSpace::Rgba.new(1, 1, 1)
       expect(my_opaque_color.opaque!).to be false
       expect(my_opaque_color.a).to eq 1.0
     end
 
     it  'Returns a new Object with alpha channel set to 1.0' \
         'calling .opaque if the object is transparent' do
-      my_transparent_color = ColorSpace::Rgba.new(1, 1, 1, 0.8)
-      my_opaque_color = ColorSpace::Rgba.new(1, 1, 1)
+      my_transparent_color = Relax::ColorSpace::Rgba.new(1, 1, 1, 0.8)
+      my_opaque_color = Relax::ColorSpace::Rgba.new(1, 1, 1)
       expect(my_opaque_color).not_to equal my_transparent_color
       expect(my_opaque_color.a).to eq 1.0
     end
 
     it 'Returns the same Object calling .opaque if it is already opaque' do
-      my_opaque_color = ColorSpace::Rgba.new(1, 1, 1)
+      my_opaque_color = Relax::ColorSpace::Rgba.new(1, 1, 1)
       expect(my_opaque_color.opaque).to equal my_opaque_color
       expect(my_opaque_color.a).to eq 1.0
     end

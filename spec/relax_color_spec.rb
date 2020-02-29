@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require_relative '../lib/relax_color.rb'
+require_relative '../lib/relax.rb'
 
 describe Relax::Color do
   let(:my_color) { Relax::Color.new(:rgba, r: 1, g: 1, b: 1, a: 0.8) }
