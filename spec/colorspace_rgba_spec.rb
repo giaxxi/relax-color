@@ -98,7 +98,8 @@ describe Relax::ColorSpace::Rgba do
       expect(my_color.to_a).to eq [1, 1, 1, 0.8]
     end
     it 'Returns an hash when called .to_h' do
-      expect(my_color.to_h).to eq({ r: 1, g: 1, b: 1, a: 0.8 })
+      expect(my_color.to_h)
+        .to eq({ red: 1, green: 1, blue: 1, alpha: 0.8 })
     end
     it  'Returns the hex colorspace string' \
         'starting with # when called .to_html_hex' do

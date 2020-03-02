@@ -18,5 +18,5 @@ Gem::Specification.new do |s|
   s.files       = files
   s.homepage    = 'https://github.com/giaxxi/relax-color'
   s.license     = 'MIT'
-  s.required_ruby_version = '>= 2.5.0'
+  s.required_ruby_version = '>= 2.6.3'
 end

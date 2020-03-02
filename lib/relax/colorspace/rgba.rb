@@ -36,7 +36,7 @@ module Relax
       end
 
       def to_h
-        { r: r, g: g, b: b, a: a }
+        { red: r, green: g, blue: b, alpha: a }
       end
 
       def to_html

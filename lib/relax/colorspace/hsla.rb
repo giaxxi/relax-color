@@ -38,7 +38,11 @@ module Relax
       end
 
       def to_h
-        { h: h, s: s, l: l, a: a }
+        { hue: h, saturation: s, lightness: l, alpha: a }
+      end
+
+      def to_html
+        "hsla(#{h},#{s}%,#{l}%,#{a})"
       end
 
       def to_hex

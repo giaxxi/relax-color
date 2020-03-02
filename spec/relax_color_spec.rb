@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require_relative '../lib/relax.rb'
+require_relative '../lib/relax-color.rb'
 
 describe Relax::Color do
   let(:my_color) { Relax::Color.new(:rgba, r: 1, g: 1, b: 1, a: 0.8) }
@@ -13,10 +13,6 @@ describe Relax::Color do
   it 'Instantiate a RGBA color by default method new' do
     expect(my_color).to be_a Relax::Color
   end
-  it 'Instantiate a RGBA color by calling the module RGBA' do
-    my_color = Relax::Color::RGBA.new(1, 1, 1, 0.8)
-    expect(my_color).to be_a Relax::Color
-  end
   it 'Instantiate a RGBA color ba calling the class method .rgba' do
     my_color = Relax::Color.rgba(1, 1, 1, 0.8)
     expect(my_color).to be_a Relax::Color
@@ -25,6 +21,14 @@ describe Relax::Color do
   it 'Has one instance of Relax::Rgba and one of Relax::Hsl' do
     expect(my_color.rgba).to be_a Relax::Rgba
     expect(my_color.hsla).to be_a Relax::Hsla
+  end
+end
+
+describe 'Converting to Hex' do
+  let(:my_color) { Relax::Color.new(:rgba, r: 10, g: 20, b: 30, a: 0.1) }
+  it 'Returns an Relax::Hex instance properli converted' do
+    expect(my_color.to_hex).to be_a Relax::Hex
+    expect(my_color.to_hex.to_a).to eq %w[0a 14 1e]
   end
 end
 

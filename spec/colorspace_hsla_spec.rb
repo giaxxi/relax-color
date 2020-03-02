@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require_relative '../lib/relax.rb'
+require_relative '../lib/relax-color.rb'
 
 # ADD TESTS FOR GRAYS AND COLORS
 describe Relax::ColorSpace::Hsla do
@@ -60,7 +60,8 @@ describe Relax::ColorSpace::Hsla do
       expect(my_color.to_a).to eq [341, 100, 50, 0.5]
     end
     it 'Returns a Hash when called .to_h' do
-      expect(my_color.to_h).to eq({ h: 341, s: 100, l: 50, a: 0.5 })
+      expect(my_color.to_h)
+        .to eq({ hue: 341, saturation: 100, lightness: 50, alpha: 0.5 })
     end
     it 'Returns a String when called .to_s' do
       expect(my_color.to_s).to eq '341, 100, 50, 0.5'

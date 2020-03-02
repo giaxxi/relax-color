@@ -23,5 +23,9 @@ module Relax
       class StringMustBeSixChars < StandardError; end
       class InvalidChars < StandardError; end
     end
+
+    module SVG
+      class MustBeAnArray < StandardError; end
+    end
   end
 end

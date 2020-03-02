@@ -20,10 +20,10 @@ module Relax
       end
 
       def to_h
-        %i[r g b].zip(to_a).to_h
+        %i[red green blue].zip(to_a).to_h
       end
 
-      def to_html_hex
+      def to_html
         hex.prepend '#'
       end
 
@@ -34,7 +34,7 @@ module Relax
       end
 
       def to_rgba_hash
-        %i[r g b a].zip(to_rgba).to_h
+        %i[red green blue alpha].zip(to_rgba).to_h
       end
 
       def to_hsl
