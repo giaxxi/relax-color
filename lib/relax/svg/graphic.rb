@@ -8,6 +8,8 @@ module Relax
       # Prototype Graphic object as defined by
       # https://www.w3.org/TR/SVG2/struct.html#TermGraphicsElement
       class GraphicPrototype
+        include Relax::SVG::Render::RenderGraphic
+
         def initialize
           yield self
         end

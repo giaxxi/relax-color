@@ -7,19 +7,32 @@ module Relax
     # Inherits from Relax::SVG::Container::Svg
     # It has methods for saving as a file
     # It can't contain na objecto f the same class
-    class Image < Relax::SVG::Container::Svg
+    class Image
       NAME = 'svg'
       XMLNS_ATTRIBUTE = [:xmlns].freeze
+      PRESENTATION_ATTRIBUTES = [:fill].freeze
+      GEOMETRY_ATTRIBUTES = %i[x y width height].freeze
+      SPECIFIC_ATTRIBUTES = %i[
+        view__box
+        preserve__aspect__ratio
+        zoom__and__pan transform
+      ].freeze
       ATTRIBUTES = (
         XMLNS_ATTRIBUTE +
-        Relax::SVG::Container::Svg::ATTRIBUTES
+        PRESENTATION_ATTRIBUTES +
+        GEOMETRY_ATTRIBUTES +
+        SPECIFIC_ATTRIBUTES +
+        Relax::SVG::PRESENTATION_ATTRIBUTES +
+        Relax::SVG::CORE_ATTRIBUTES
       ).freeze
 
+      include Relax::SVG::Children
+      include Relax::SVG::Render::RenderContainer
       attr_accessor :xmlns, *ATTRIBUTES
 
       def initialize
         @xmlns = Relax::SVG::XMLNS
-        super
+        yield self
       end
 
       def save_minified(filename)

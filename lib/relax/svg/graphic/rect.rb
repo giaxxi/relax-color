@@ -16,15 +16,6 @@ module Relax
         ).freeze
 
         attr_accessor(*ATTRIBUTES)
-
-        def render
-          attributes =  instance_variables
-                        .each_with_object([]) do |var, res|
-                          value = instance_eval var.to_s
-                          res << "#{var.to_svg_attribute}=\"#{value}\""
-                        end.join(' ')
-          Relax::SVG.graphic_tag(NAME, attributes)
-        end
       end
     end
   end

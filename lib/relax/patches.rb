@@ -19,6 +19,8 @@ module Relax
         to_s.prepend('@').to_sym
       end
 
+      # To-do: remove element_ prefix
+      # required for element_class and element_id
       def to_svg_attribute
         tmp = to_s
               .split('__')

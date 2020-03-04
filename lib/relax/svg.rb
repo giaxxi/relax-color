@@ -92,6 +92,9 @@ module Relax
 end
 
 # require_relative './patches.rb'
+require_relative './svg/render.rb'
+require_relative './svg/children.rb'
+require_relative './svg/image.rb'
 require_relative './svg/container.rb'
 require_relative './svg/graphic.rb'
 require_relative './svg/never_rendered.rb'
@@ -99,6 +102,4 @@ require_relative './svg/xml.rb'
 require_relative './svg/container/defs.rb'
 require_relative './svg/container/group.rb'
 require_relative './svg/container/svg.rb'
-# image must be after container/svg because it inherits from it
-require_relative './svg/image.rb'
 require_relative './svg/graphic/rect.rb'
