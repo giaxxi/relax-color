@@ -26,6 +26,7 @@ module Relax
 
     module SVG
       class MustBeAnArray < StandardError; end
+      class ChildrenMustBeRendered < StandardError; end
     end
   end
 end

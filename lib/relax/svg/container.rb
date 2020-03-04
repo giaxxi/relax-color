@@ -11,13 +11,15 @@ module Relax
                       Relax::SVG::PRESENTATION_ATTRIBUTES +
                       Relax::SVG::CORE_ATTRIBUTES
                     ).freeze
-
+      ChildrenMustBeRendered = Relax::Errors::SVG::ChildrenMustBeRendered
       # This is a prototype class for a structural element
       class ContainerPrototype
         def initialize
           yield self
         end
 
+        # To-do: move add children into a module,
+        # so Image can avoid inheriting from Svg class
         def add_children(children = [])
           raise Relax::Errors::SVG::MustBeAnArray unless children.is_a? Array
 
@@ -46,13 +48,23 @@ module Relax
 
         private
 
-        def children_method_names
+        # Returns the instance variables generated
+        # by calling add_children
+        # to_instance_var is a patch on Symbol class
+        def children_names
           instance_variables - self.class::ATTRIBUTES.map(&:to_instance_var)
         end
 
+        # To-do: raise an error when children is not
+        # an svg element, currently it is possible
+        # to add just a String as element
         def children_values
-          children_method_names
-            .map { |method_name| instance_eval(method_name.to_s) }.join
+          children_names.map do |method_name|
+            value = instance_eval(method_name.to_s)
+            raise ChildrenMustBeRendered unless value.is_a? String
+
+            value
+          end.join
         end
       end
     end

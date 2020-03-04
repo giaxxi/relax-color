@@ -5,12 +5,6 @@ module Relax
   # an svg image founded on
   # https://www.w3.org/TR/SVG2/
   module SVG
-    begin
-      require 'nokogiri'
-      NOKOGIRI = true
-    rescue LoadError
-      NOKOGIRI = false
-    end
     XMLNS = 'http://www.w3.org/2000/svg'
     CORE_ATTRIBUTES = %i[
       element_id
@@ -84,7 +78,7 @@ module Relax
     ].freeze
 
     def self.graphic_tag(name, attributes)
-      "<#{name} #{attributes} />"
+      "<#{name} #{attributes}/>"
     end
 
     def self.structural_tag_opening(name, attributes)
@@ -101,7 +95,10 @@ end
 require_relative './svg/container.rb'
 require_relative './svg/graphic.rb'
 require_relative './svg/never_rendered.rb'
+require_relative './svg/xml.rb'
 require_relative './svg/container/defs.rb'
 require_relative './svg/container/group.rb'
 require_relative './svg/container/svg.rb'
+# image must be after container/svg because it inherits from it
+require_relative './svg/image.rb'
 require_relative './svg/graphic/rect.rb'

@@ -5,7 +5,7 @@ module Relax
     module Container
       # Structural element as defined by
       # https://www.w3.org/TR/SVG2/struct.html#GElement
-      class Group < ContainerPrototype
+      class Group < Relax::SVG::Container::ContainerPrototype
         NAME = 'g'
         GEOMETRY_ATTRIBUTES = %i[x y width height].freeze
         SPECIFIC_ATTRIBUTES = [:transform].freeze
