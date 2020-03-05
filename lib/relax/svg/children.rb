@@ -11,21 +11,30 @@ module Relax
         raise Relax::Errors::SVG::MustBeAnArray unless children.is_a? Array
 
         yield children if block_given?
-
         children.map! do |child|
-          break child if child.is_a? String
-          child.render
+          if child.is_a? String
+            child
+          else
+            child.render
+          end
         end
         feed(children)
       end
 
       def feed(children)
-        children.each_with_index do |value, i|
-          instance_variable_set "@children_#{i}", value
+        children.each do |value|
+          instance_variable_set "@children_#{unique_id}", value
         end
+        # children.each_with_index do |value, i|
+        #   # instance_variable_set "@children_#{i}", value
+        # end
       end
 
       private
+
+      def unique_id
+        Process.clock_gettime(Process::CLOCK_MONOTONIC).to_s.delete('.')
+      end
 
       # Returns the instance variables generated
       # by calling add_children
