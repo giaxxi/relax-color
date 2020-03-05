@@ -49,17 +49,16 @@ output =  '<svg xmlns="http://www.w3.org/2000/svg" ' \
           '<rect x="2" y="2" width="100" ' \
           'height="50" fill="silver"/></g></svg>'
 
-output_indented = '<?xml version="1.0"?>' \
-                  "\n<svg xmlns=\"http://www.w3.org/2000/svg\" " \
-                  'x="0" y="0" ' \
-                  'width="300" height="300">' \
-                  "\n  <rect x=\"2\" y=\"100\" width=\"100\" " \
-                  'height="50" fill="#ff0050"/>' \
-                  "\n  <rect x=\"100\" y=\"100\" " \
-                  'width="20" height="50" fill="cyan"/>' \
-                  "\n  <g element-id=\"piero\">" \
-                  "\n    <rect x=\"2\" y=\"2\" width=\"100\" " \
-                  'height="50" fill="silver"/>' \
+output_indented = "<?xml version='1.0'?>" \
+                  "\n<svg xmlns='http://www.w3.org/2000/svg' x='0' y='0' " \
+                  "width='300' height='300'>" \
+                  "\n  <rect x='2' y='100' width='100' " \
+                  "height='50' fill='#ff0050'/>" \
+                  "\n  <rect x='100' y='100' " \
+                  "width='20' height='50' fill='cyan'/>" \
+                  "\n  <g element-id='piero'>" \
+                  "\n    <rect x='2' y='2' width='100' " \
+                  "height='50' fill='silver'/>" \
                   "\n  </g>\n</svg>"
 
 describe Relax::SVG do
@@ -68,7 +67,6 @@ describe Relax::SVG do
   end
 
   it 'Should be indented properly' do
-    xml = Relax::SVG::XML.new image.render
-    expect(xml.to_xml).to eq output_indented
+    expect(image.to_xml).to eq output_indented
   end
 end

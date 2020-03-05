@@ -41,7 +41,7 @@ module Relax
 
       def to_xml
         content = Relax::SVG::XML.new render
-        content.to_xml
+        content.xml
       end
 
       def save_to_xml(filename)

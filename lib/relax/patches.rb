@@ -2,7 +2,7 @@
 
 module Relax
   # Patches for the standard String class
-  module String
+  module StringPatches
     def numeric?
       Float(self)
       true
@@ -14,7 +14,7 @@ module Relax
   module SVG
     # Patches for the standard Symbol class
     # used in module SVG
-    module Symbol
+    module SymbolPatches
       def to_instance_var
         to_s.prepend('@').to_sym
       end
@@ -32,5 +32,5 @@ module Relax
   end
 end
 
-String.include Relax::String
-Symbol.include Relax::SVG::Symbol
+String.include Relax::StringPatches
+Symbol.include Relax::SVG::SymbolPatches

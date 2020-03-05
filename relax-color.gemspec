@@ -19,4 +19,5 @@ Gem::Specification.new do |s|
   s.homepage    = 'https://github.com/giaxxi/relax-color'
   s.license     = 'MIT'
   s.required_ruby_version = '>= 2.6.3'
+  s.add_runtime_dependency 'rexml', '> 3.1.9'
 end
