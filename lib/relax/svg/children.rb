@@ -10,7 +10,12 @@ module Relax
       def add_children(children = [])
         raise Relax::Errors::SVG::MustBeAnArray unless children.is_a? Array
 
-        yield children
+        yield children if block_given?
+
+        children.map! do |child|
+          break child if child.is_a? String
+          child.render
+        end
         feed(children)
       end
 
@@ -19,20 +24,6 @@ module Relax
           instance_variable_set "@children_#{i}", value
         end
       end
-
-      # To-do: move render into a render module
-      # def render
-      #   attributes =  self.class::ATTRIBUTES
-      #                 .each_with_object([]) do |var, res|
-      #                   value = instance_eval var.to_s
-      #                   res << "#{var.to_svg_attribute}=\"#{value}\"" if value
-      #                 end.join(' ')
-      #   [
-      #     Relax::SVG.structural_tag_opening(self.class::NAME, attributes),
-      #     children_values,
-      #     Relax::SVG.structural_tag_closing(self.class::NAME)
-      #   ].join
-      # end
 
       private
 

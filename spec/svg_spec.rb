@@ -15,7 +15,7 @@ group = Relax::SVG::Container::Group.new do |g|
 end
 
 group.add_children do |g|
-  g << rectangle.render
+  g << rectangle # without render
 end
 
 image = Relax::SVG::Image.new do |c|
