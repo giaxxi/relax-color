@@ -10,10 +10,10 @@ module Relax
         GEOMETRY_ATTRIBUTES = %i[x y width height].freeze
         SPECIFIC_ATTRIBUTES = [:transform].freeze
         ATTRIBUTES = (
-                      GEOMETRY_ATTRIBUTES +
-                      SPECIFIC_ATTRIBUTES +
-                      Relax::SVG::Container::ATTRIBUTES
-                    ).freeze
+            GEOMETRY_ATTRIBUTES +
+            SPECIFIC_ATTRIBUTES +
+            Relax::SVG::Container::ATTRIBUTES
+          ).freeze
 
         attr_accessor(*ATTRIBUTES)
       end

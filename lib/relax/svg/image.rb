@@ -15,7 +15,8 @@ module Relax
       SPECIFIC_ATTRIBUTES = %i[
         view__box
         preserve__aspect__ratio
-        zoom__and__pan transform
+        zoom__and__pan
+        transform
       ].freeze
       ATTRIBUTES = (
         XMLNS_ATTRIBUTE +
@@ -28,7 +29,7 @@ module Relax
 
       include Relax::SVG::Children
       include Relax::SVG::Render::RenderContainer
-      attr_accessor :xmlns, *ATTRIBUTES
+      attr_accessor(*ATTRIBUTES)
 
       def initialize
         @xmlns = Relax::SVG::XMLNS

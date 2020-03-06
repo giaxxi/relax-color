@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 # To-do: maybe switch to https://github.com/xml4r/libxml-ruby
-require 'rexml/document'
 
 module Relax
   module SVG
@@ -31,6 +30,8 @@ module Relax
       private
 
       def to_xml(spaces: 2)
+        require 'rexml/document'
+
         document = REXML::Document.new @code
         document.write indent: spaces, output: @xml
       end

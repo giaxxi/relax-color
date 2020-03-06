@@ -9,10 +9,8 @@ module Relax
         NAME = 'circle'
         GEOMETRY_ATTRIBUTES = %i[cx cy r].freeze
         ATTRIBUTES = (
-          Relax::SVG::CORE_ATTRIBUTES +
-          Relax::SVG::PRESENTATION_ATTRIBUTES +
-          Relax::SVG::Graphic::PRESENTATION_ATTRIBUTES +
-          GEOMETRY_ATTRIBUTES
+          GEOMETRY_ATTRIBUTES +
+          Relax::SVG::Graphic::ATTRIBUTES
         ).freeze
 
         attr_accessor(*ATTRIBUTES)

@@ -3,8 +3,6 @@
 module Relax
   module SVG
     module Graphic
-      PRESENTATION_ATTRIBUTES = [:fill].freeze
-
       # Prototype Graphic object as defined by
       # https://www.w3.org/TR/SVG2/struct.html#TermGraphicsElement
       class GraphicPrototype

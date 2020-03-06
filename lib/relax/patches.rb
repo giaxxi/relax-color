@@ -24,9 +24,9 @@ module Relax
       def to_svg_attribute
         tmp = to_s
               .split('__')
-              .then { |first, *rest| [first, rest.map(&:capitalize).join] }
+              .yield_self { |fst, *rst| [fst, rst.map(&:capitalize).join] }
               .join
-        tmp.to_s.delete_prefix('@').gsub('_', '-')
+        tmp.to_s.delete_prefix('@').delete_prefix('element_').gsub('_', '-')
       end
     end
   end

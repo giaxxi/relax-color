@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+# To-do: make a header file with all constant
+# definition for all the elements
 module Relax
   # This module helps generating
   # an svg image founded on
@@ -77,16 +79,22 @@ module Relax
       writing_mode
     ].freeze
 
-    def self.graphic_tag(name, attributes)
-      "<#{name} #{attributes}/>"
+    module Container
+      PRESENTATION_ATTRIBUTES = [:fill].freeze
+      ATTRIBUTES = (
+        PRESENTATION_ATTRIBUTES +
+        Relax::SVG::PRESENTATION_ATTRIBUTES +
+        Relax::SVG::CORE_ATTRIBUTES
+      ).freeze
     end
 
-    def self.structural_tag_opening(name, attributes)
-      "<#{name} #{attributes}>"
-    end
-
-    def self.structural_tag_closing(name)
-      "</#{name}>"
+    module Graphic
+      PRESENTATION_ATTRIBUTES = [:fill].freeze
+      ATTRIBUTES = (
+        PRESENTATION_ATTRIBUTES +
+        Relax::SVG::CORE_ATTRIBUTES +
+        Relax::SVG::PRESENTATION_ATTRIBUTES
+      ).freeze
     end
   end
 end
