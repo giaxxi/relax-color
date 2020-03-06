@@ -10,7 +10,7 @@ rectangle = Relax::SVG::Graphic::Rect.new do |r|
   r.fill = 'silver'
 end
 
-group = Relax::SVG::Container::Group.new do |g|
+group = Relax::SVG::Structural::Group.new do |g|
   g.element_id = 'piero'
 end
 
@@ -42,12 +42,12 @@ end
 output =  '<svg xmlns="http://www.w3.org/2000/svg" ' \
           'x="0" y="0" width="300" height="300">' \
           '<rect x="2" y="100" width="100" ' \
-          'height="50" fill="#ff0050"/>' \
+          'height="50" fill="#ff0050"></rect>' \
           '<rect x="100" y="100" width="20" ' \
-          'height="50" fill="cyan"/>' \
+          'height="50" fill="cyan"></rect>' \
           '<g id="piero">' \
           '<rect x="2" y="2" width="100" ' \
-          'height="50" fill="silver"/></g></svg>'
+          'height="50" fill="silver"></rect></g></svg>'
 
 output_indented = "<?xml version='1.0'?>" \
                   "\n<svg xmlns='http://www.w3.org/2000/svg' x='0' y='0' " \

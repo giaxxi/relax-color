@@ -2,10 +2,10 @@
 
 module Relax
   module SVG
-    module Container
+    module Structural
       # Structural element as defined by
       # https://www.w3.org/TR/SVG2/struct.html#SVGElement
-      class Svg < Relax::SVG::Container::ContainerPrototype
+      class Svg < Relax::SVG::Structural::StructuralPrototype
         NAME = 'svg'
         GEOMETRY_ATTRIBUTES = %i[x y width height].freeze
         SPECIFIC_ATTRIBUTES = %i[
@@ -16,7 +16,7 @@ module Relax
         ATTRIBUTES = (
           GEOMETRY_ATTRIBUTES +
           SPECIFIC_ATTRIBUTES +
-          Relax::SVG::Container::ATTRIBUTES
+          Relax::SVG::Structural::ATTRIBUTES
         ).freeze
 
         attr_accessor(*ATTRIBUTES)

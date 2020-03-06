@@ -79,7 +79,7 @@ module Relax
       writing_mode
     ].freeze
 
-    module Container
+    module Structural
       PRESENTATION_ATTRIBUTES = [:fill].freeze
       ATTRIBUTES = (
         PRESENTATION_ATTRIBUTES +
@@ -103,12 +103,12 @@ end
 require_relative './svg/render.rb'
 require_relative './svg/children.rb'
 require_relative './svg/image.rb'
-require_relative './svg/container.rb'
+require_relative './svg/structural.rb'
 require_relative './svg/graphic.rb'
 require_relative './svg/never_rendered.rb'
 require_relative './svg/xml.rb'
-require_relative './svg/container/defs.rb'
-require_relative './svg/container/group.rb'
-require_relative './svg/container/svg.rb'
+require_relative './svg/structural/defs.rb'
+require_relative './svg/structural/group.rb'
+require_relative './svg/structural/svg.rb'
 require_relative './svg/graphic/rect.rb'
 require_relative './svg/graphic/circle.rb'

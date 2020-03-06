@@ -11,6 +11,13 @@ module Relax
         raise Relax::Errors::SVG::MustBeAnArray unless children.is_a? Array
 
         yield children if block_given?
+        map(children)
+        self
+      end
+
+      private
+
+      def map(children)
         children.map! do |child|
           if child.is_a? String
             child
@@ -29,8 +36,6 @@ module Relax
         #   # instance_variable_set "@children_#{i}", value
         # end
       end
-
-      private
 
       def unique_id
         Process.clock_gettime(Process::CLOCK_MONOTONIC).to_s.delete('.')

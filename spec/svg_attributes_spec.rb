@@ -10,17 +10,17 @@ describe 'SVG clsses atributes' do
     end
   end
 
-  context Relax::SVG::Container::Svg do
+  context Relax::SVG::Structural::Svg do
     it 'Should not have duplicated attibutes' do
-      expect(Relax::SVG::Container::Svg::ATTRIBUTES.size)
-        .to be Relax::SVG::Container::Svg::ATTRIBUTES.compact.size
+      expect(Relax::SVG::Structural::Svg::ATTRIBUTES.size)
+        .to be Relax::SVG::Structural::Svg::ATTRIBUTES.compact.size
     end
   end
 
-  context Relax::SVG::Container::Group do
+  context Relax::SVG::Structural::Group do
     it 'Should not have duplicated attibutes' do
-      expect(Relax::SVG::Container::Group::ATTRIBUTES.size)
-        .to be Relax::SVG::Container::Group::ATTRIBUTES.compact.size
+      expect(Relax::SVG::Structural::Group::ATTRIBUTES.size)
+        .to be Relax::SVG::Structural::Group::ATTRIBUTES.compact.size
     end
   end
 
