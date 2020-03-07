@@ -2,7 +2,7 @@
 
 require_relative '../lib/relax-color.rb'
 
-rectangle = Relax::SVG::Graphic::Rect.new do |r|
+rectangle = Relax::SVG::Shape::Rect.new do |r|
   r.x = 2
   r.y = 2
   r.width = 100

@@ -24,10 +24,10 @@ describe 'SVG clsses atributes' do
     end
   end
 
-  context Relax::SVG::Graphic::Rect do
+  context Relax::SVG::Shape::Rect do
     it 'Should not have duplicated attibutes' do
-      expect(Relax::SVG::Graphic::Rect::ATTRIBUTES.size)
-        .to be Relax::SVG::Graphic::Rect::ATTRIBUTES.compact.size
+      expect(Relax::SVG::Shape::Rect::ATTRIBUTES.size)
+        .to be Relax::SVG::Shape::Rect::ATTRIBUTES.compact.size
     end
   end
 end

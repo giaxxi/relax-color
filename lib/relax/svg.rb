@@ -88,7 +88,7 @@ module Relax
       ).freeze
     end
 
-    module Graphic
+    module Shape
       PRESENTATION_ATTRIBUTES = [:fill].freeze
       ATTRIBUTES = (
         PRESENTATION_ATTRIBUTES +
@@ -104,11 +104,11 @@ require_relative './svg/render.rb'
 require_relative './svg/children.rb'
 require_relative './svg/image.rb'
 require_relative './svg/structural.rb'
-require_relative './svg/graphic.rb'
+require_relative './svg/shape.rb'
 require_relative './svg/never_rendered.rb'
 require_relative './svg/xml.rb'
 require_relative './svg/structural/defs.rb'
 require_relative './svg/structural/group.rb'
 require_relative './svg/structural/svg.rb'
-require_relative './svg/graphic/rect.rb'
-require_relative './svg/graphic/circle.rb'
+require_relative './svg/shape/rect.rb'
+require_relative './svg/shape/circle.rb'

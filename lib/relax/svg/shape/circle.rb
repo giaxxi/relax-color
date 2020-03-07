@@ -2,15 +2,15 @@
 
 module Relax
   module SVG
-    module Graphic
+    module Shape
       # Rectangle object as defined by
       # https://www.w3.org/TR/SVG2/shapes.html#RectElement
-      class Rect < GraphicPrototype
-        NAME = 'rect'
-        GEOMETRY_ATTRIBUTES = %i[x y width height rx ry].freeze
+      class Circle < ShapePrototype
+        NAME = 'circle'
+        GEOMETRY_ATTRIBUTES = %i[cx cy r].freeze
         ATTRIBUTES = (
           GEOMETRY_ATTRIBUTES +
-          Relax::SVG::Graphic::ATTRIBUTES
+          Relax::SVG::Shape::ATTRIBUTES
         ).freeze
 
         attr_accessor(*ATTRIBUTES)
