@@ -14,6 +14,7 @@ module Relax
         ).freeze
         InvalidPoints = Relax::Errors::SVG::InvalidPoints
 
+        include Relax::Validator::SVG
         attr_accessor(*ATTRIBUTES)
 
         def initialize
@@ -24,8 +25,7 @@ module Relax
 
         def points=(points)
           error_msg = 'Polyline points must be an array of arrays ' \
-                      'of integers or floats pairs like ' \
-                      '[[0, 0], [10, 20], ...]'
+            'of integers or floats pairs like: [[0, 0], [10, 20], ...]'
           raise InvalidPoints, error_msg unless valid_points(points)
 
           @points = points.map do |pair|
@@ -36,19 +36,7 @@ module Relax
         private
 
         def valid_points(points)
-          points.is_a?(Array) && points.all? { |pair| valid(pair) }
-        end
-
-        def valid(pair)
-          array_of_pairs?(pair) && all_numbers?(pair)
-        end
-
-        def array_of_pairs?(pair)
-          pair.is_a?(Array) && pair.size == 2
-        end
-
-        def all_numbers?(pair)
-          pair.all? { |e| e.is_a?(Integer) || e.is_a?(Float) }
+          points.is_a?(Array) && points.all? { |point| validate_point(point) }
         end
       end
     end
