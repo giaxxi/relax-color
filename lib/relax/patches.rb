@@ -14,6 +14,9 @@ module Relax
   module SVG
     # Patches for the standard Symbol class
     # used in module SVG
+    module ArrayPatches; end
+    # Patches for the standard Symbol class
+    # used in module SVG
     module SymbolPatches
       def to_instance_var
         to_s.prepend('@').to_sym
