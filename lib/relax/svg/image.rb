@@ -47,6 +47,7 @@ module Relax
 
       def save_to_xml(filename)
         File.open(filename, 'w') { |f| f.write to_xml }
+        true
       end
     end
   end

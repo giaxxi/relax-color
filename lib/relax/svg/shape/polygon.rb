@@ -5,8 +5,8 @@ module Relax
     module Shape
       # Line object as defined by
       # https://www.w3.org/TR/SVG2/shapes.html#LineElement
-      class Polyline < ShapePrototype
-        NAME = 'polyline'
+      class Polygon < ShapePrototype
+        NAME = 'polygon'
         GEOMETRY_ATTRIBUTES = %i[points].freeze
         ATTRIBUTES = (
           GEOMETRY_ATTRIBUTES +
@@ -18,13 +18,14 @@ module Relax
         attr_accessor(*ATTRIBUTES)
 
         def initialize
-          @fill = 'none'
+          @fill = 'red'
+          @stroke = 'black'
           @stroke_width = 1
           super
         end
 
         def points=(points)
-          error_msg = 'Polyline points must be an array of arrays ' \
+          error_msg = 'Polygon points must be an array of arrays ' \
             'of integers or floats pairs like: [[0, 0], [10, 20], ...]'
           raise InvalidPoints, error_msg unless valid_points(points)
 
