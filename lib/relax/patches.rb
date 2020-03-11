@@ -14,7 +14,15 @@ module Relax
   module SVG
     # Patches for the standard Symbol class
     # used in module SVG
-    module ArrayPatches; end
+    module ArrayPatches
+      def to_cmd_params
+        if first.is_a? Array
+          map { |e| e.join(',') }.join(' ')
+        else
+          join(' ')
+        end
+      end
+    end
     # Patches for the standard Symbol class
     # used in module SVG
     module SymbolPatches
@@ -36,4 +44,5 @@ module Relax
 end
 
 String.include Relax::StringPatches
+Array.include Relax::SVG::ArrayPatches
 Symbol.include Relax::SVG::SymbolPatches

@@ -23,8 +23,7 @@ module Relax
 
         def move_to(args)
           type, point = args.first
-          validate_point(point)
-          params = point.join(',')
+          params = validate_point(point).join(',')
           cmd = command params, type, rel: 'm', abs: 'M'
           add_command cmd
         end
@@ -38,22 +37,34 @@ module Relax
           if (VERTICAL + HORIZONTAL).include? point.last
             horizontal_or_vertical_line(type, point)
           else
-            validate_point(point)
-            params = point.join(',')
+            params = validate_point(point).join(',')
             cmd = command params, type, rel: 'l', abs: 'L'
             add_command cmd
           end
         end
 
+        # def old_curve_to(args)
+        #   type, point = args.first
+        #   coords = args[:controls] << point
+        #   if RELATIVE.include? type
+        #     do_curve_to(coords, 'c')
+        #   elsif ABSOLUTE.include? type
+        #     do_curve_to(coords, 'C')
+        #   else raise UnknownPathCommand
+        #   end
+        # end
+
         def curve_to(args)
           type, point = args.first
-          coords = args[:controls] << point
-          if RELATIVE.include? type
-            do_curve_to(coords, 'c')
-          elsif ABSOLUTE.include? type
-            do_curve_to(coords, 'C')
+          if args.key? :smooth
+            params = [args[:smooth], point]
+            cmd = { rel: 's', abs: 'S' }
+          elsif args.key? :controls
+            params = args[:controls].first(2) << point
+            cmd = { rel: 'c', abs: 'C' }
           else raise UnknownPathCommand
           end
+          add_command command(validate_points(params).to_cmd_params, type, cmd)
         end
 
         private
@@ -63,11 +74,11 @@ module Relax
           self
         end
 
-        def command(params, type, args)
+        def command(params, type, cmd)
           if RELATIVE.include? type
-            "#{args[:rel]}#{params} "
+            "#{cmd[:rel]}#{params} "
           elsif ABSOLUTE.include? type
-            "#{args[:abs]}#{params} "
+            "#{cmd[:abs]}#{params} "
           else
             raise UnknownPathCommand
           end
@@ -84,11 +95,11 @@ module Relax
           end
         end
 
-        def do_curve_to(coords, type)
-          coords.each { |point| validate_point(point) }
-          coords = coords.map { |point| point.join(',') }.join(' ')
-          add_command("#{type}#{coords} ")
-        end
+        # def do_curve_to(coords, type)
+        #   coords.each { |point| validate_point(point) }
+        #   coords = coords.map { |point| point.join(',') }.join(' ')
+        #   add_command("#{type}#{coords} ")
+        # end
       end
     end
   end

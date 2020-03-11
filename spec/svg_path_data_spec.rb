@@ -10,7 +10,7 @@ describe Relax::SVG::Shape::PathData do
   let(:validate) { Dummy.new }
   it 'Should return a valid point' do
     point = [1, 1]
-    expect(validate.validate_point(point)).to be true
+    expect(validate.validate_point(point)).to be point
   end
   it 'Should raise Relax::Errors::SVG::InvalidPoint (1)' do
     point = [1, '1']

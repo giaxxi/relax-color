@@ -5,12 +5,23 @@ module Relax
   module Validator
     # Helper methods for validating data on SVG module
     module SVG
+      def validate_points(points)
+        valid_points = [
+          points.is_a?(Array),
+          (points.size > 1),
+          points.all? { |point| validate_point(point) }
+        ].all?
+        raise Relax::Errors::SVG::InvalidPoint unless valid_points
+
+        points
+      end
+
       # point = [x, y]
       def validate_point(point)
         valid_point = valid_point_array(point) && valid_pairs(point)
         raise Relax::Errors::SVG::InvalidPoint unless valid_point
 
-        true
+        point
       end
 
       private
