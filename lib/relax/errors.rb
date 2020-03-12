@@ -29,6 +29,7 @@ module Relax
       class ChildrenMustBeRendered < StandardError; end
       class InvalidPoints < StandardError; end
       class InvalidPoint < StandardError; end
+      class MissingPointsNumber < StandardError; end
       class UnknownPathCommand < StandardError; end
     end
   end

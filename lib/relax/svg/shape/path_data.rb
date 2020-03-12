@@ -11,6 +11,12 @@ module Relax
         HORIZONTAL = %i[h hor horizontal].freeze
         RELATIVE = %i[rel relative].freeze
         ABSOLUTE = %i[abs absolute].freeze
+        CURVES = {
+          cubic: { abs: 'C', rel: 'c', ctrl_pts: 2 },
+          cubic_smooth: { abs: 'S', rel: 's', ctrl_pts: 1 },
+          quadratic: { abs: 'Q', rel: 'q', ctrl_pts: 2 },
+          quadratic_smooth: { abs: 'T', rel: 't', ctrl_pts: 1 }
+        }.freeze
 
         def initialize
           @data = []
@@ -43,28 +49,12 @@ module Relax
           end
         end
 
-        # def old_curve_to(args)
-        #   type, point = args.first
-        #   coords = args[:controls] << point
-        #   if RELATIVE.include? type
-        #     do_curve_to(coords, 'c')
-        #   elsif ABSOLUTE.include? type
-        #     do_curve_to(coords, 'C')
-        #   else raise UnknownPathCommand
-        #   end
-        # end
-
         def curve_to(args)
-          type, point = args.first
-          if args.key? :smooth
-            params = [args[:smooth], point]
-            cmd = { rel: 's', abs: 'S' }
-          elsif args.key? :controls
-            params = args[:controls].first(2) << point
-            cmd = { rel: 'c', abs: 'C' }
-          else raise UnknownPathCommand
-          end
-          add_command command(validate_points(params).to_cmd_params, type, cmd)
+          assign_ref_and_type(args)
+          point = validate_point(args[@ref])
+          ctrl_pts = validate_points(args[@type], CURVES[@type][:ctrl_pts])
+          params = [ctrl_pts, point].flatten.each_slice(2).to_a.to_cmd_params
+          add_command command(params, @ref, CURVES[@type])
         end
 
         private
@@ -74,10 +64,10 @@ module Relax
           self
         end
 
-        def command(params, type, cmd)
-          if RELATIVE.include? type
+        def command(params, ref, cmd)
+          if RELATIVE.include? ref
             "#{cmd[:rel]}#{params} "
-          elsif ABSOLUTE.include? type
+          elsif ABSOLUTE.include? ref
             "#{cmd[:abs]}#{params} "
           else
             raise UnknownPathCommand
@@ -95,11 +85,24 @@ module Relax
           end
         end
 
-        # def do_curve_to(coords, type)
-        #   coords.each { |point| validate_point(point) }
-        #   coords = coords.map { |point| point.join(',') }.join(' ')
-        #   add_command("#{type}#{coords} ")
-        # end
+        def assign_ref_and_type(args)
+          @ref = pick_the_key(valid_refs.select { |k| args[k] })
+          @type = pick_the_key(CURVES.keys.select { |k| args[k] })
+        end
+
+        def pick_the_key(ary)
+          raise UnknownPathCommand unless ary.size == 1
+
+          ary.first
+        end
+
+        def valid_keys
+          CURVES.keys + valid_references
+        end
+
+        def valid_refs
+          ABSOLUTE + RELATIVE
+        end
       end
     end
   end

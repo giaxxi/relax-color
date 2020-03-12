@@ -6,24 +6,75 @@ class Dummy
 end
 
 describe Relax::SVG::Shape::PathData do
-  let(:invalid_point) { Relax::Errors::SVG::InvalidPoint }
-  let(:validate) { Dummy.new }
-  it 'Should return a valid point' do
-    point = [1, 1]
-    expect(validate.validate_point(point)).to be point
+  context 'Valid point' do
+    let(:invalid_point) { Relax::Errors::SVG::InvalidPoint }
+    let(:validate) { Dummy.new }
+    it 'Should return a valid point' do
+      point = [1, 1]
+      expect(validate.validate_point(point)).to be point
+    end
+    it 'Should raise Relax::Errors::SVG::InvalidPoint (1)' do
+      point = [1, '1']
+      expect { validate.validate_point(point) }.to raise_error invalid_point
+    end
+    it 'Should raise Relax::Errors::SVG::InvalidPoint (2)' do
+      point = [1, 1, 1]
+      expect { validate.validate_point(point) }.to raise_error invalid_point
+    end
+    it 'Should raise Relax::Errors::SVG::InvalidPoint (3)' do
+      point = 1
+      expect { validate.validate_point(point) }
+        .to raise_error invalid_point
+    end
   end
-  it 'Should raise Relax::Errors::SVG::InvalidPoint (1)' do
-    point = [1, '1']
-    expect { validate.validate_point(point) }.to raise_error invalid_point
+end
+
+describe Relax::SVG::Shape::PathData do
+  context 'Valid points by limit of points' do
+    let(:invalid_points) { Relax::Errors::SVG::InvalidPoints }
+    let(:invalid_point) { Relax::Errors::SVG::InvalidPoint }
+    let(:validate) { Dummy.new }
+    it 'Should return valid points' do
+      points = [[1, 1], [2, 2], [3, 3]]
+      expect(validate.validate_points(points, points.size)).to be points
+    end
+    it 'Should raise Relax::Errors::SVG::InvalidPoint (1)' do
+      points = [[1, '1'], [2, 2]]
+      expect { validate.validate_points(points, 2) }
+        .to raise_error invalid_point
+    end
+    it 'Should raise Relax::Errors::SVG::InvalidPoint (2)' do
+      points = [[1, 1, 1], [2, 2]]
+      expect { validate.validate_points(points, 2) }
+        .to raise_error invalid_point
+    end
+    it 'Should raise Relax::Errors::SVG::InvalidPoint (3)' do
+      points = [1, 1]
+      expect { validate.validate_points(points, 2) }
+        .to raise_error invalid_point
+    end
   end
-  it 'Should raise Relax::Errors::SVG::InvalidPoint (2)' do
-    point = [1, 1, 1]
-    expect { validate.validate_point(point) }.to raise_error invalid_point
-  end
-  it 'Should raise Relax::Errors::SVG::InvalidPoint (3)' do
-    point = 1
-    expect { validate.validate_point(point) }
-      .to raise_error invalid_point
+end
+
+describe Relax::SVG::Shape::PathData do
+  context 'Valid points when only one point' do
+    let(:invalid_points) { Relax::Errors::SVG::InvalidPoints }
+    let(:invalid_point) { Relax::Errors::SVG::InvalidPoint }
+    let(:validate) { Dummy.new }
+    it 'Should return valid points' do
+      points = [1, 1]
+      expect(validate.validate_points(points, 1)).to be points
+    end
+    it 'Should return not a valid points' do
+      points = [1, '1']
+      expect { validate.validate_points(points, 1) }
+        .to raise_error invalid_point
+    end
+    it 'Should return valid points' do
+      points = [[1, 1], [2, 2]]
+      expect { validate.validate_points(points, 1) }
+        .to raise_error invalid_point
+    end
   end
 end
 
@@ -131,22 +182,22 @@ describe Relax::SVG::Shape::PathData do
   context 'cubic curve_to' do
     let(:path_data) { Relax::SVG::Shape::PathData.new }
     it 'Should properly format curve_to relative' do
-      path_data.curve_to rel: [100, 100], controls: [[10, 20], [30, 40]]
+      path_data.curve_to rel: [100, 100], cubic: [[10, 20], [30, 40]]
       expect(path_data.data).to eql 'c10,20 30,40 100,100'
     end
     it 'Should properly format move_to_absolute' do
-      path_data.curve_to abs: [100, 100], controls: [[10, 20], [30, 40]]
+      path_data.curve_to abs: [100, 100], cubic: [[10, 20], [30, 40]]
       expect(path_data.data).to eql 'C10,20 30,40 100,100'
     end
     it 'Should properly format chained calls' do
       path_data
         .line_to(abs: [10, :v])
-        .curve_to abs: [100, 100], controls: [[10, 20], [30, 40]]
+        .curve_to abs: [100, 100], cubic: [[10, 20], [30, 40]]
       expect(path_data.data).to eql 'V10 C10,20 30,40 100,100'
     end
     it 'Should properly format chained calls while instantiating' do
       path_data = Relax::SVG::Shape::PathData.new do |pd|
-        pd.curve_to abs: [100, 100], controls: [[10, 20], [30, 40]]
+        pd.curve_to abs: [100, 100], cubic: [[10, 20], [30, 40]]
         pd.line_to rel: [20, 50]
       end
       expect(path_data.data).to eql 'C10,20 30,40 100,100 l20,50'
