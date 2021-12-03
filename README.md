@@ -10,4 +10,4 @@ Still working on it. :)
 ## Why did I?
 It seems like **coding** relaxes.
 It seems like some **colors** relax.
-Together even better.
+Both is even better.
